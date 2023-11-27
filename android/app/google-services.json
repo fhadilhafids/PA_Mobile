@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "73557118298",
+    "project_id": "pa-mobile-18279",
+    "storage_bucket": "pa-mobile-18279.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:73557118298:android:74fb30f88f70445687f763",
+        "android_client_info": {
+          "package_name": "com.example.pa_mobile"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQ70_7Ihn6SfyfYn3_g4wOQJaEYwWRseU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
