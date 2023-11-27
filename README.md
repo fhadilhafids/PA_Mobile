@@ -1,6 +1,6 @@
 KELOMPOK 3 PA PEMROGRAMAN PIRANTI BERGERAK
           
-          <h2>IKOA E CATALOG</h2>
+IKOA E CATALOG
 
 - Muhammad Amin Quthbi Arabi / 2109106076 (Ketua)
 - Jerry Fitriansyah / 2109106067
