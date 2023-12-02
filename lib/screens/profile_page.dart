@@ -57,6 +57,55 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  Future<void> showDeleteConfirmationDialog(BuildContext context) async {
+    Future<void> deleteAccount() async {
+      try {
+        User? user = FirebaseAuth.instance.currentUser;
+        if (user != null) {
+          await user.delete();
+          print("User account deleted.");
+        } else {
+          print("No user signed in.");
+        }
+      } catch (e) {
+        print("Error deleting account: $e");
+      }
+    }
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Delete Account"),
+          content: Text(
+              "Are you sure you want to delete your account? This action cannot be undone."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await deleteAccount();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => SignInScreen(),
+                  ),
+                );
+              },
+              child: Text(
+                "Delete",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -130,7 +179,9 @@ class _ProfilePageState extends State<ProfilePage> {
                   title: "Change Password",
                 ),
                 SettingsItem(
-                  onTap: () async {},
+                  onTap: () async {
+                    showDeleteConfirmationDialog(context);
+                  },
                   icons: CupertinoIcons.delete_solid,
                   title: "Delete account",
                   titleStyle: TextStyle(
