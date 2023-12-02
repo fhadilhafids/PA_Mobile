@@ -1,4 +1,7 @@
+import 'dart:typed_data';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:pa_mobile/screens/change_password.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
@@ -13,6 +16,42 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Uint8List? _pickedImageBytes;
+
+  Future<void> _uploadProfileImage(Uint8List imageBytes) async {
+    try {
+      String userId = FirebaseAuth.instance.currentUser!.uid;
+      String imageName = 'profile_images/$userId.jpg';
+      Reference storageReference =
+          FirebaseStorage.instance.ref().child(imageName);
+      UploadTask uploadTask = storageReference.putData(imageBytes);
+      await uploadTask.whenComplete(() => null);
+      String imageUrl = await storageReference.getDownloadURL();
+
+      await FirebaseAuth.instance.currentUser
+          ?.updateProfile(photoURL: imageUrl);
+
+      print('Gambar berhasil diupload dan dihubungkan dengan akun pengguna.');
+    } catch (error) {
+      print('Error: $error');
+    }
+  }
+
+  Future<void> _pickImage() async {
+    final pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      final imageBytes = await pickedFile.readAsBytes();
+      final Uint8List uint8List = Uint8List.fromList(imageBytes);
+
+      setState(() {
+        _pickedImageBytes = uint8List;
+      });
+      await _uploadProfileImage(uint8List);
+    }
+  }
+
   Future<void> showLogOutConfirmationDialog(BuildContext context) async {
     Future<void> LogoutAccount() async {
       try {
@@ -120,7 +159,13 @@ class _ProfilePageState extends State<ProfilePage> {
                   CircleAvatar(
                     radius: 70,
                     backgroundColor: Colors.transparent,
-                    child: ClipOval(),
+                    child: ClipOval(
+                      child: _pickedImageBytes != null
+                          ? Image.memory(_pickedImageBytes!,
+                              fit: BoxFit.cover, width: 140, height: 140)
+                          : Image.network('assets/images/kursi.jpg',
+                              fit: BoxFit.cover, width: 140, height: 140),
+                    ),
                   ),
                   Container(
                     decoration: BoxDecoration(
@@ -128,7 +173,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       color: Colors.blue,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: _pickImage,
                       icon: Icon(
                         Icons.camera_alt_rounded,
                         color: Colors.white,
