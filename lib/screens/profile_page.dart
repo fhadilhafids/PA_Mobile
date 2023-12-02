@@ -6,7 +6,9 @@ import 'package:pa_mobile/screens/change_password.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
 import 'signin_screen.dart';
+import '../theme_mode_data.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage();
@@ -79,7 +81,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await LogoutAccount();
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SignInScreen(),
                   ),
@@ -128,7 +130,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await deleteAccount();
-                Navigator.of(context).pushReplacement(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => SignInScreen(),
                   ),
@@ -187,7 +189,14 @@ class _ProfilePageState extends State<ProfilePage> {
             SettingsGroup(
               items: [
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () {
+                    Provider.of<ThemeModeData>(context, listen: false)
+                        .changeTheme(
+                            Provider.of<ThemeModeData>(context, listen: false)
+                                    .isDarkModeActive
+                                ? ThemeMode.light
+                                : ThemeMode.dark);
+                  },
                   icons: Theme.of(context).brightness == Brightness.dark
                       ? Icons.dark_mode_rounded
                       : Icons.light_mode_rounded,
@@ -200,6 +209,15 @@ class _ProfilePageState extends State<ProfilePage> {
                   subtitle: Theme.of(context).brightness == Brightness.light
                       ? "Disabled"
                       : "Enabled",
+                  trailing: Switch.adaptive(
+                    value: Provider.of<ThemeModeData>(context, listen: false)
+                        .isDarkModeActive,
+                    onChanged: (bool value) {
+                      Provider.of<ThemeModeData>(context, listen: false)
+                          .changeTheme(
+                              value ? ThemeMode.dark : ThemeMode.light);
+                    },
+                  ),
                 ),
               ],
             ),
