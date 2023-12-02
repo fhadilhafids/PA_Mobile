@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:pa_mobile/screens/change_password.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'signin_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage();
@@ -10,6 +13,50 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Future<void> showLogOutConfirmationDialog(BuildContext context) async {
+    Future<void> LogoutAccount() async {
+      try {
+        await FirebaseAuth.instance.signOut();
+        print("User Logout Success.");
+      } catch (e) {
+        print("Error Log Out account: $e");
+      }
+    }
+
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Log Out Account"),
+          content: Text(
+              "Are you sure you want to log out from your account? This action cannot be undone."),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text("Cancel"),
+            ),
+            TextButton(
+              onPressed: () async {
+                await LogoutAccount();
+                Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(
+                    builder: (context) => SignInScreen(),
+                  ),
+                );
+              },
+              child: Text(
+                "Log Out",
+                style: TextStyle(color: Colors.red),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -66,17 +113,24 @@ class _ProfilePageState extends State<ProfilePage> {
               settingsGroupTitle: "Account",
               items: [
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () async {
+                    await showLogOutConfirmationDialog(context);
+                  },
                   icons: Icons.exit_to_app_rounded,
                   title: "Sign Out",
                 ),
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => changePassword()));
+                  },
                   icons: CupertinoIcons.repeat,
                   title: "Change Password",
                 ),
                 SettingsItem(
-                  onTap: () {},
+                  onTap: () async {},
                   icons: CupertinoIcons.delete_solid,
                   title: "Delete account",
                   titleStyle: TextStyle(
