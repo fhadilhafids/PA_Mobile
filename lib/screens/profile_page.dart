@@ -6,6 +6,7 @@ import 'package:pa_mobile/screens/change_password.dart';
 import 'package:babstrap_settings_screen/babstrap_settings_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pa_mobile/screens/fav_page.dart';
 import 'package:provider/provider.dart';
 import 'signin_screen.dart';
 import '../theme_mode_data.dart';
@@ -19,7 +20,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   Uint8List? _pickedImageBytes;
-
+  String? _imageUrl;
+  String? _previousImageUrl;
   Future<void> _uploadProfileImage(Uint8List imageBytes) async {
     try {
       String userId = FirebaseAuth.instance.currentUser!.uid;
@@ -40,6 +42,7 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   Future<void> _pickImage() async {
+    _previousImageUrl = _imageUrl;
     final pickedFile =
         await ImagePicker().pickImage(source: ImageSource.gallery);
 
@@ -81,7 +84,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await LogoutAccount();
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => SignInScreen(),
                   ),
@@ -130,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
             TextButton(
               onPressed: () async {
                 await deleteAccount();
-                Navigator.of(context).push(
+                Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
                     builder: (context) => SignInScreen(),
                   ),
@@ -148,7 +151,16 @@ class _ProfilePageState extends State<ProfilePage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    _imageUrl = FirebaseAuth.instance.currentUser?.photoURL;
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (_imageUrl != _previousImageUrl) {
+      _previousImageUrl = _imageUrl;
+    }
     return Scaffold(
       body: Padding(
         padding: const EdgeInsets.all(10),
@@ -165,8 +177,25 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: _pickedImageBytes != null
                           ? Image.memory(_pickedImageBytes!,
                               fit: BoxFit.cover, width: 140, height: 140)
-                          : Image.network('assets/images/kursi.jpg',
-                              fit: BoxFit.cover, width: 140, height: 140),
+                          : _imageUrl != null
+                              ? Image.network(
+                                  _imageUrl!,
+                                  fit: BoxFit.cover,
+                                  width: 140,
+                                  height: 140,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    print('Error loading image: $error');
+                                    print(
+                                        'Image URL from Firebase: $_imageUrl');
+                                    return Image.network(
+                                        'assets/images/kursi.jpg',
+                                        fit: BoxFit.cover,
+                                        width: 140,
+                                        height: 140);
+                                  },
+                                )
+                              : Image.network('assets/images/kursi.jpg',
+                                  fit: BoxFit.cover, width: 140, height: 140),
                     ),
                   ),
                   Container(
@@ -188,6 +217,22 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             SettingsGroup(
               items: [
+                SettingsItem(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const FavPage()));
+                  },
+                  icons: Icons.favorite_border,
+                  iconStyle: IconStyle(
+                    iconsColor: Colors.white,
+                    withBackground: true,
+                    backgroundColor: Colors.blue,
+                  ),
+                  title: 'Favorite',
+                  subtitle: "List of your favorite products",
+                ),
                 SettingsItem(
                   onTap: () {
                     Provider.of<ThemeModeData>(context, listen: false)

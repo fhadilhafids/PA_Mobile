@@ -1,10 +1,10 @@
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:posttest6/widgets/reusable_widget.dart' as reus;
+import 'package:pa_mobile/widgets/reusable_widget.dart' as reus;
 import 'reset_password.dart';
 import 'signup_screen.dart';
 import 'home_page.dart';
-import 'package:posttest6/utils/color_utils.dart';
+import 'package:pa_mobile/utils/color_utils.dart';
 import 'package:flutter/material.dart';
 
 class SignInScreen extends StatefulWidget {
