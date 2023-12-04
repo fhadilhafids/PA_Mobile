@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'signin_screen.dart';
-import 'package:posttest6/utils/color_utils.dart';
-import 'package:posttest6/widgets/reusable_widget.dart';
+import 'package:pa_mobile/utils/color_utils.dart';
+import 'package:pa_mobile/widgets/reusable_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 

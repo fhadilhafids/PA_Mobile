@@ -63,7 +63,7 @@ class _changePasswordState extends State<changePassword> {
         content: AwesomeSnackbarContent(
           title: 'Change Password Was Failed',
           message: ' ',
-          contentType: ContentType.success,
+          contentType: ContentType.failure,
         ),
       );
 
