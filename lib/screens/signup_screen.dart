@@ -42,6 +42,24 @@ class SignUpScreen extends StatefulWidget {
 class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController _passwordTextController = TextEditingController();
   TextEditingController _emailTextController = TextEditingController();
+  String _emailError = '';
+  String _passwordError = '';
+  @override
+  void initState() {
+    super.initState();
+    _emailTextController.addListener(() {
+      setState(() {
+        _emailError = '';
+      });
+    });
+
+    _passwordTextController.addListener(() {
+      setState(() {
+        _passwordError = '';
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,21 +94,40 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   height: 20,
                 ),
                 reusableTextField("Enter Email Id", Icons.person_outline, false,
-                    _emailTextController),
+                    _emailTextController,
+                    errorText: _emailError),
                 const SizedBox(
                   height: 20,
                 ),
                 reusableTextField("Enter Password", Icons.lock_outlined, true,
-                    _passwordTextController),
+                    _passwordTextController,
+                    errorText: _passwordError),
                 const SizedBox(
                   height: 20,
                 ),
                 firebaseUIButton(context, "Sign Up", () {
+                  if (_emailTextController.text.isEmpty) {
+                    setState(() {
+                      _emailError = 'Email is required';
+                      _passwordError = '';
+                    });
+                    return;
+                  }
+
+                  if (_passwordTextController.text.isEmpty) {
+                    setState(() {
+                      _passwordError = 'Password is required';
+                      _emailError = '';
+                    });
+                    return;
+                  }
                   FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                           email: _emailTextController.text,
                           password: _passwordTextController.text)
                       .then((value) {
+                    _emailTextController.clear();
+                    _passwordTextController.clear();
                     final snackBar = SnackBar(
                       elevation: 0,
                       behavior: SnackBarBehavior.floating,
@@ -106,14 +143,15 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       ..hideCurrentSnackBar()
                       ..showSnackBar(snackBar);
                   }).onError((error, stackTrace) {
+                    _passwordTextController.clear();
                     final snackBar = SnackBar(
                       elevation: 0,
                       behavior: SnackBarBehavior.floating,
                       backgroundColor: Colors.transparent,
                       content: AwesomeSnackbarContent(
                         title: 'Registration Failed',
-                        message: 'Try registering again!',
-                        contentType: ContentType.warning,
+                        message: _handleRegistrationError(error),
+                        contentType: ContentType.failure,
                       ),
                     );
 
@@ -146,5 +184,25 @@ class _SignUpScreenState extends State<SignUpScreen> {
         )
       ],
     );
+  }
+
+  String _handleRegistrationError(dynamic error) {
+    if (error is FirebaseAuthException) {
+      switch (error.code) {
+        case 'email-already-in-use':
+          _emailTextController.clear();
+          _passwordTextController.clear();
+          return 'Email is already in use. Please use a different email.';
+
+        default:
+          _emailTextController.clear();
+          _passwordTextController.clear();
+          return 'Registration failed. Try again.';
+      }
+    } else {
+      _emailTextController.clear();
+      _passwordTextController.clear();
+      return 'An error occurred during registration.';
+    }
   }
 }

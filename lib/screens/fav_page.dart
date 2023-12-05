@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:posttest6/screens/detail_page.dart';
+import 'package:pa_mobile/screens/detail_page.dart';
 import 'data_local.dart';
 
 class FavPage extends StatefulWidget {
