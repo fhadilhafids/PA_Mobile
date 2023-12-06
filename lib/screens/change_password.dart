@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:pa_mobile/screens/signin_screen.dart';
 import 'package:pa_mobile/widgets/reusable_widget.dart';
 import 'package:pa_mobile/utils/color_utils.dart';
 import 'package:flutter/material.dart';
@@ -7,12 +8,16 @@ import 'package:awesome_snackbar_content/awesome_snackbar_content.dart';
 class changePassword extends StatefulWidget {
   const changePassword({Key? key}) : super(key: key);
   @override
+  // ignore: library_private_types_in_public_api
   _changePasswordState createState() => _changePasswordState();
 }
 
+// ignore: camel_case_types
 class _changePasswordState extends State<changePassword> {
-  TextEditingController _oldpasswordTextController = TextEditingController();
-  TextEditingController _newpasswordTextController = TextEditingController();
+  final TextEditingController _oldpasswordTextController =
+      TextEditingController();
+  final TextEditingController _newpasswordTextController =
+      TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool _isLoading = false;
   String _oldPasswordError = '';
@@ -42,6 +47,8 @@ class _changePasswordState extends State<changePassword> {
             password: _oldpasswordTextController.text);
         await currentUser.reauthenticateWithCredential(cred);
         await currentUser.updatePassword(_newpasswordTextController.text);
+        _oldpasswordTextController.clear();
+        _newpasswordTextController.clear();
         final snackBar = SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.floating,
@@ -53,10 +60,16 @@ class _changePasswordState extends State<changePassword> {
           ),
         );
 
+        // ignore: use_build_context_synchronously
         ScaffoldMessenger.of(context)
           ..hideCurrentSnackBar()
-          ..showSnackBar(snackBar);
+          ..showSnackBar(snackBar).closed.then((reason) {
+            Navigator.pushReplacement(context,
+                MaterialPageRoute(builder: (context) => const SignInScreen()));
+          });
       } else {
+        _oldpasswordTextController.clear();
+        _newpasswordTextController.clear();
         final snackBar = SnackBar(
           elevation: 0,
           behavior: SnackBarBehavior.floating,
@@ -73,6 +86,8 @@ class _changePasswordState extends State<changePassword> {
           ..showSnackBar(snackBar);
       }
     } catch (error) {
+      _oldpasswordTextController.clear();
+      _newpasswordTextController.clear();
       final snackBar = SnackBar(
         elevation: 0,
         behavior: SnackBarBehavior.floating,
@@ -84,6 +99,7 @@ class _changePasswordState extends State<changePassword> {
         ),
       );
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
         ..showSnackBar(snackBar);
@@ -106,7 +122,7 @@ class _changePasswordState extends State<changePassword> {
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        iconTheme: IconThemeData(
+        iconTheme: const IconThemeData(
           color: Colors.white,
         ),
         backgroundColor: Colors.transparent,
@@ -128,7 +144,7 @@ class _changePasswordState extends State<changePassword> {
           ], begin: Alignment.topCenter, end: Alignment.bottomCenter)),
           child: SingleChildScrollView(
               child: Padding(
-            padding: EdgeInsets.fromLTRB(20, 120, 20, 0),
+            padding: const EdgeInsets.fromLTRB(20, 120, 20, 0),
             child: Column(
               children: <Widget>[
                 const SizedBox(
@@ -165,8 +181,8 @@ class _changePasswordState extends State<changePassword> {
                   await _changePassword();
                 }),
                 _isLoading
-                    ? Padding(
-                        padding: const EdgeInsets.all(16.0),
+                    ? const Padding(
+                        padding: EdgeInsets.all(16.0),
                         child: CircularProgressIndicator(),
                       )
                     : Container(),
@@ -187,12 +203,12 @@ class _changePasswordState extends State<changePassword> {
         default:
           _oldpasswordTextController.clear();
           _newpasswordTextController.clear();
-          return 'Registration failed. Try again later.';
+          return 'Change Password failed. Try again later.';
       }
     } else {
       _oldpasswordTextController.clear();
       _newpasswordTextController.clear();
-      return 'An error occurred during registration.';
+      return 'An error occurred during Change Password.';
     }
   }
 }

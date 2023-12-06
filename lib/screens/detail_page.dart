@@ -214,8 +214,8 @@ class _ProductDetailsState extends State<ProductDetails> {
               }),
         ],
       ),
-      body: Center(
-        child: ListView(
+      body: SingleChildScrollView(
+        child: Column(
           children: [
             Image.asset(
               _list[widget.id].foto,

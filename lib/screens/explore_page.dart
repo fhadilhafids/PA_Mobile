@@ -11,7 +11,7 @@ class ExplorePage extends StatefulWidget {
 }
 
 class _ExplorePageState extends State<ExplorePage> {
-  List _list = barang.listBarang;
+  final List _list = barang.listBarang;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,7 @@ class _ExplorePageState extends State<ExplorePage> {
           height: 50,
         ),
         Padding(
-            padding: EdgeInsets.only(left: 20, right: 16),
+            padding: const EdgeInsets.only(left: 20, right: 16),
             child: Text(
               'All Product',
               style: TextStyle(
@@ -96,7 +96,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     ],
                   ));
             }),
-        SizedBox(
+        const SizedBox(
           height: 20,
         )
       ]),

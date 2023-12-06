@@ -13,7 +13,7 @@ class FavPage extends StatefulWidget {
 }
 
 class _FavPage extends State<FavPage> {
-  List _list = barang.listBarang;
+  final List _list = barang.listBarang;
 
   Stream<QuerySnapshot> cekFav() {
     var id = FirebaseAuth.instance.currentUser!.uid;
@@ -29,9 +29,9 @@ class _FavPage extends State<FavPage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 13, 31, 88),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Favorite Products',
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -42,7 +42,7 @@ class _FavPage extends State<FavPage> {
           height: 50,
         ),
         Padding(
-            padding: EdgeInsets.only(left: 20, right: 16),
+            padding: const EdgeInsets.only(left: 20, right: 16),
             child: Text(
               'My Favorite Products',
               style: TextStyle(
@@ -60,12 +60,12 @@ class _FavPage extends State<FavPage> {
             builder: (context, snapshot) {
               switch (snapshot.connectionState) {
                 case ConnectionState.waiting:
-                  return Center(
+                  return const Center(
                     child: CircularProgressIndicator(),
                   );
                 default:
                   if (snapshot.hasError) {
-                    return Center(
+                    return const Center(
                       child: Text("Error saat baca database"),
                     );
                   } else {
@@ -76,7 +76,7 @@ class _FavPage extends State<FavPage> {
                       }
                     }
                     if (panjang == 0) {
-                      return Center(
+                      return const Center(
                         child: Text('Your list is empty'),
                       );
                     } else {
@@ -171,7 +171,7 @@ class _FavPage extends State<FavPage> {
                   }
               }
             }),
-        SizedBox(
+        const SizedBox(
           height: 20,
         )
       ]),

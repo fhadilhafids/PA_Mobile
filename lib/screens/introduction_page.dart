@@ -7,14 +7,14 @@ class IntroductionPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return IntroductionScreen(
-      next: Text("Selanjutnya"),
-      done: Text("Selesai"),
+      next: const Text("Selanjutnya"),
+      done: const Text("Selesai"),
       onDone: () {
         Navigator.of(context).pop();
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) {
-              return SignInScreen();
+              return const SignInScreen();
             },
           ),
         );

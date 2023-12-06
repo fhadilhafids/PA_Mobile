@@ -11,15 +11,15 @@ class exploreCategory extends StatefulWidget {
 }
 
 class _exploreCategoryPageState extends State<exploreCategory> {
-  List _list = barang.listBarang;
+  final List _list = barang.listBarang;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 13, 31, 88),
-        iconTheme: IconThemeData(color: Colors.white),
+        iconTheme: const IconThemeData(color: Colors.white),
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'Explore by Categories',
           style: TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
@@ -30,7 +30,7 @@ class _exploreCategoryPageState extends State<exploreCategory> {
           height: 50,
         ),
         Padding(
-            padding: EdgeInsets.only(left: 20, right: 16),
+            padding: const EdgeInsets.only(left: 20, right: 16),
             child: Text(
               widget.kategori.toString().toUpperCase(),
               style: TextStyle(

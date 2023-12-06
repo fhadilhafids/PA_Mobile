@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
               brightness: Brightness.light,
               colorScheme: lightScheme,
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 headlineLarge: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w600,
@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
               useMaterial3: true,
               brightness: Brightness.dark,
               colorScheme: darkScheme,
-              textTheme: TextTheme(
+              textTheme: const TextTheme(
                 headlineLarge: TextStyle(
                     fontSize: 48,
                     fontWeight: FontWeight.w600,
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
               ),
             ),
             themeMode: Provider.of<ThemeModeData>(context).themeMode,
-            home: MyHomePage(),
+            home: const MyHomePage(),
             debugShowCheckedModeBanner: false);
       }),
     );
@@ -72,7 +72,10 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
+  const MyHomePage({super.key});
+
   @override
+  // ignore: library_private_types_in_public_api
   _MyHomePageState createState() => _MyHomePageState();
 }
 
@@ -81,15 +84,9 @@ class _MyHomePageState extends State<MyHomePage> {
   void initState() {
     super.initState();
     Timer(
-        Duration(seconds: 3),
+        const Duration(seconds: 3),
         () => Navigator.pushReplacement(context,
             MaterialPageRoute(builder: (context) => const IntroductionPage())));
-    @override
-    Widget build(BuildContext context) {
-      return Container(
-          color: Colors.white,
-          child: FlutterLogo(size: MediaQuery.of(context).size.height));
-    }
   }
 
   @override

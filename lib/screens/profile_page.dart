@@ -71,26 +71,26 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Log Out Account"),
-          content: Text(
+          title: const Text("Log Out Account"),
+          content: const Text(
               "Are you sure you want to log out from your account? This action cannot be undone."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
                 await LogoutAccount();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => SignInScreen(),
+                    builder: (context) => const SignInScreen(),
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 "Log Out",
                 style: TextStyle(color: Colors.red),
               ),
@@ -120,26 +120,26 @@ class _ProfilePageState extends State<ProfilePage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text("Delete Account"),
-          content: Text(
+          title: const Text("Delete Account"),
+          content: const Text(
               "Are you sure you want to delete your account? This action cannot be undone."),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text("Cancel"),
+              child: const Text("Cancel"),
             ),
             TextButton(
               onPressed: () async {
                 await deleteAccount();
                 Navigator.of(context).pushReplacement(
                   MaterialPageRoute(
-                    builder: (context) => SignInScreen(),
+                    builder: (context) => const SignInScreen(),
                   ),
                 );
               },
-              child: Text(
+              child: const Text(
                 "Delete",
                 style: TextStyle(color: Colors.red),
               ),
@@ -199,13 +199,13 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ),
                   Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       shape: BoxShape.circle,
                       color: Colors.blue,
                     ),
                     child: IconButton(
                       onPressed: _pickImage,
-                      icon: Icon(
+                      icon: const Icon(
                         Icons.camera_alt_rounded,
                         color: Colors.white,
                       ),
@@ -281,7 +281,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => changePassword()));
+                            builder: (context) => const changePassword()));
                   },
                   icons: CupertinoIcons.repeat,
                   title: "Change Password",
@@ -292,7 +292,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   },
                   icons: CupertinoIcons.delete_solid,
                   title: "Delete account",
-                  titleStyle: TextStyle(
+                  titleStyle: const TextStyle(
                     color: Colors.red,
                     fontWeight: FontWeight.bold,
                   ),

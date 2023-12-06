@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'explore_page.dart';
 import 'profile_page.dart';
 import 'explore_categories.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:pa_mobile/screens/detail_page.dart';
 import 'data_local.dart';
@@ -24,10 +23,10 @@ List<String> _laman = [
 class _MyHomePageState extends State<MyHomePage> {
   int _index = 0;
   bool isDarkMode = false;
-  static List<Widget> _pages = [
-    HomePage(),
-    ExplorePage(),
-    ProfilePage(),
+  static final List<Widget> _pages = [
+    const HomePage(),
+    const ExplorePage(),
+    const ProfilePage(),
   ];
   void _onItemTap(int index) {
     setState(() {
@@ -44,7 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
         centerTitle: true,
         title: Text(
           _laman.elementAt(_index),
-          style: TextStyle(
+          style: const TextStyle(
               color: Colors.white, fontSize: 20, fontWeight: FontWeight.bold),
         ),
       ),
@@ -103,14 +102,14 @@ final List<String> imgList = [
 
 class _HomePageState extends State<HomePage> {
   int _current = 0;
-  List _list = barang.listBarang;
+  final List _list = barang.listBarang;
   @override
   Widget build(BuildContext context) {
     final List<Widget> imageSliders = imgList
         .map((item) => Container(
               height: 200,
               child: ClipRRect(
-                borderRadius: BorderRadius.all(
+                borderRadius: const BorderRadius.all(
                   Radius.circular(5.0),
                 ),
                 child: Stack(
@@ -125,7 +124,7 @@ class _HomePageState extends State<HomePage> {
                       left: 0.0,
                       right: 0.0,
                       child: Container(
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           gradient: LinearGradient(
                             colors: [
                               Color.fromARGB(200, 0, 0, 0),
@@ -135,7 +134,7 @@ class _HomePageState extends State<HomePage> {
                             end: Alignment.topCenter,
                           ),
                         ),
-                        padding: EdgeInsets.symmetric(
+                        padding: const EdgeInsets.symmetric(
                           horizontal: 20,
                           vertical: 0,
                         ),
@@ -183,7 +182,7 @@ class _HomePageState extends State<HomePage> {
                   return Container(
                     width: 8,
                     height: 8,
-                    margin: EdgeInsets.symmetric(
+                    margin: const EdgeInsets.symmetric(
                       vertical: 0,
                       horizontal: 3,
                     ),
@@ -191,11 +190,11 @@ class _HomePageState extends State<HomePage> {
                       shape: BoxShape.circle,
                       color: _current == index
                           ? Theme.of(context).brightness == Brightness.light
-                              ? Color.fromRGBO(0, 0, 0, 0.9)
-                              : Color.fromRGBO(197, 197, 197, 0.898)
+                              ? const Color.fromRGBO(0, 0, 0, 0.9)
+                              : const Color.fromRGBO(197, 197, 197, 0.898)
                           : Theme.of(context).brightness == Brightness.light
-                              ? Color.fromRGBO(0, 0, 0, 0.4)
-                              : Color.fromRGBO(163, 163, 163, 0.894),
+                              ? const Color.fromRGBO(0, 0, 0, 0.4)
+                              : const Color.fromRGBO(163, 163, 163, 0.894),
                     ),
                   );
                 }).toList(),
@@ -352,7 +351,7 @@ class _HomePageState extends State<HomePage> {
                   },
                   child: Container(
                     width: 160,
-                    margin: EdgeInsets.only(left: 20),
+                    margin: const EdgeInsets.only(left: 20),
                     child: Column(
                       children: <Widget>[
                         Container(
@@ -366,7 +365,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                         ),
-                        SizedBox(height: 5),
+                        const SizedBox(height: 5),
                         Text(
                           _list[index].nama.toString(),
                           style: TextStyle(
